@@ -22,7 +22,6 @@ const Index = () => {
       <nav className="fixed top-0 w-full z-50 glass border-b border-border/30">
         <div className="container mx-auto px-6 h-16 flex items-center justify-between">
           <Logo size={32} />
-          </div>
           <div className="flex items-center gap-3">
             <Button variant="ghost" onClick={() => navigate('/login')}>Login</Button>
             <Button onClick={() => navigate('/register')} className="neon-glow">Get Started</Button>
