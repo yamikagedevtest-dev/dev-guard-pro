@@ -11,7 +11,9 @@ import MCQTest from "./pages/MCQTest";
 import CodingTest from "./pages/CodingTest";
 import Results from "./pages/Results";
 import AdminPanel from "./pages/AdminPanel";
+import AdminCandidateDetail from "./pages/AdminCandidateDetail";
 import CertificateVerify from "./pages/CertificateVerify";
+import Leaderboard from "./pages/Leaderboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import NotFound from "./pages/NotFound";
 
@@ -32,6 +34,8 @@ const App = () => (
           <Route path="/test/coding/:sessionId" element={<ProtectedRoute><CodingTest /></ProtectedRoute>} />
           <Route path="/results/:sessionId" element={<ProtectedRoute><Results /></ProtectedRoute>} />
           <Route path="/admin" element={<ProtectedRoute requireAdmin><AdminPanel /></ProtectedRoute>} />
+          <Route path="/admin/candidate/:sessionId" element={<ProtectedRoute requireAdmin><AdminCandidateDetail /></ProtectedRoute>} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/verify/:certificateId" element={<CertificateVerify />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
