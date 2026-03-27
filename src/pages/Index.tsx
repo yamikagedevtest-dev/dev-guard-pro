@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Shield, Brain, Code, Trophy, Zap, Users } from "lucide-react";
+import Logo from "@/components/Logo";
 
 const features = [
   { icon: Code, title: "Multi-Round Testing", desc: "MCQ, coding challenges, debugging, and system design rounds with adaptive difficulty." },
@@ -20,11 +21,7 @@ const Index = () => {
       {/* Nav */}
       <nav className="fixed top-0 w-full z-50 glass border-b border-border/30">
         <div className="container mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
-              <Zap className="w-5 h-5 text-primary" />
-            </div>
-            <span className="text-lg font-bold neon-text">Yamikage</span>
+          <Logo size={32} />
           </div>
           <div className="flex items-center gap-3">
             <Button variant="ghost" onClick={() => navigate('/login')}>Login</Button>

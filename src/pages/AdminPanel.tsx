@@ -122,7 +122,7 @@ const AdminPanel = () => {
                     <TableCell>{statusBadge(s.cheat_status)}</TableCell>
                     <TableCell className="text-sm">{new Date(s.created_at).toLocaleDateString()}</TableCell>
                     <TableCell>
-                      <Button variant="ghost" size="sm" onClick={() => navigate(`/results/${s.id}`)}>View</Button>
+                      <Button variant="ghost" size="sm" onClick={() => navigate(`/admin/candidate/${s.id}`)}>View</Button>
                     </TableCell>
                   </TableRow>
                 );

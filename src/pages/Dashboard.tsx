@@ -3,7 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
-import { Code, Brain, Trophy, LogOut, Zap } from "lucide-react";
+import { Code, Brain, Trophy, LogOut, TrendingUp } from "lucide-react";
+import Logo from "@/components/Logo";
 import type { User } from "@supabase/supabase-js";
 
 const Dashboard = () => {
@@ -40,17 +41,18 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen p-6">
       <div className="container mx-auto max-w-5xl">
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
-              <Zap className="w-6 h-6 text-primary" />
-            </div>
+            <Logo size={36} />
             <div>
-              <h1 className="text-3xl font-bold">Dashboard</h1>
-              <p className="text-muted-foreground">Welcome, {profile?.full_name || 'Developer'}</p>
+              <h1 className="text-2xl md:text-3xl font-bold">Dashboard</h1>
+              <p className="text-muted-foreground text-sm">Welcome, {profile?.full_name || 'Developer'}</p>
             </div>
           </div>
-          <Button variant="outline" onClick={handleSignOut}><LogOut className="w-4 h-4 mr-2" /> Sign Out</Button>
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm" onClick={() => navigate('/leaderboard')}><TrendingUp className="w-4 h-4 mr-1" /> Leaderboard</Button>
+            <Button variant="outline" size="sm" onClick={handleSignOut}><LogOut className="w-4 h-4 mr-1" /> Sign Out</Button>
+          </div>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6 mb-8">
