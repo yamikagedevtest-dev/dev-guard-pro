@@ -14,6 +14,7 @@ import AdminPanel from "./pages/AdminPanel";
 import AdminCandidateDetail from "./pages/AdminCandidateDetail";
 import CertificateVerify from "./pages/CertificateVerify";
 import Leaderboard from "./pages/Leaderboard";
+import Profile from "./pages/Profile";
 import ProtectedRoute from "./components/ProtectedRoute";
 import NotFound from "./pages/NotFound";
 
@@ -35,6 +36,7 @@ const App = () => (
           <Route path="/results/:sessionId" element={<ProtectedRoute><Results /></ProtectedRoute>} />
           <Route path="/admin" element={<ProtectedRoute requireAdmin><AdminPanel /></ProtectedRoute>} />
           <Route path="/admin/candidate/:sessionId" element={<ProtectedRoute requireAdmin><AdminCandidateDetail /></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/verify/:certificateId" element={<CertificateVerify />} />
           <Route path="*" element={<NotFound />} />
