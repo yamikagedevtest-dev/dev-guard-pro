@@ -126,7 +126,7 @@ const MCQTest = () => {
 
   return (
     <div className="min-h-screen p-4 md:p-6 select-none">
-      <div className="container mx-auto max-w-3xl">
+      <div className="container mx-auto max-w-4xl">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
@@ -153,41 +153,53 @@ const MCQTest = () => {
 
         <Progress value={(currentIndex / Math.max(questions.length, 10)) * 100} className="mb-6 h-1.5" />
 
-        {currentQuestion && (
-          <Card className="glass">
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-base">Question {currentIndex + 1}</CardTitle>
-                <span className="text-sm font-mono text-muted-foreground">Score: {score}</span>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-lg mb-6 leading-relaxed">{currentQuestion.question}</p>
-              <div className="space-y-3">
-                {(Array.isArray(currentQuestion.options) ? currentQuestion.options : JSON.parse(currentQuestion.options)).map((option: string, i: number) => (
-                  <button
-                    key={i}
-                    onClick={() => setSelectedAnswer(i)}
-                    className={`w-full text-left p-4 rounded-xl border transition-all ${
-                      selectedAnswer === i
-                        ? 'border-primary bg-primary/10 glow'
-                        : 'border-border hover:border-primary/30 hover:bg-secondary/20'
-                    }`}
-                  >
-                    <span className="font-mono text-xs text-muted-foreground mr-3 bg-secondary/50 px-2 py-0.5 rounded">{String.fromCharCode(65 + i)}</span>
-                    {option}
-                  </button>
-                ))}
-              </div>
-              <div className="flex justify-between mt-8">
-                <Button variant="outline" onClick={finishMCQ} className="text-sm">Skip to Coding</Button>
-                <Button onClick={submitAnswer} disabled={selectedAnswer === null} className="gradient-primary text-primary-foreground">
-                  {currentIndex >= 9 ? 'Finish MCQ' : 'Next'} <ArrowRight className="w-4 h-4 ml-1" />
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        )}
+        <div className="grid lg:grid-cols-[1fr_220px] gap-4">
+          <div>
+            {currentQuestion && (
+              <Card className="glass">
+                <CardHeader className="pb-3">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-base">Question {currentIndex + 1}</CardTitle>
+                    <span className="text-sm font-mono text-muted-foreground">Score: {score}</span>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-lg mb-6 leading-relaxed">{currentQuestion.question}</p>
+                  <div className="space-y-3">
+                    {(Array.isArray(currentQuestion.options) ? currentQuestion.options : JSON.parse(currentQuestion.options)).map((option: string, i: number) => (
+                      <button
+                        key={i}
+                        onClick={() => setSelectedAnswer(i)}
+                        className={`w-full text-left p-4 rounded-xl border transition-all ${
+                          selectedAnswer === i
+                            ? 'border-primary bg-primary/10 glow'
+                            : 'border-border hover:border-primary/30 hover:bg-secondary/20'
+                        }`}
+                      >
+                        <span className="font-mono text-xs text-muted-foreground mr-3 bg-secondary/50 px-2 py-0.5 rounded">{String.fromCharCode(65 + i)}</span>
+                        {option}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="flex justify-between mt-8">
+                    <Button variant="outline" onClick={finishMCQ} className="text-sm">Skip to Coding</Button>
+                    <Button onClick={submitAnswer} disabled={selectedAnswer === null} className="gradient-primary text-primary-foreground">
+                      {currentIndex >= 9 ? 'Finish MCQ' : 'Next'} <ArrowRight className="w-4 h-4 ml-1" />
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+          </div>
+
+          {/* Webcam sidebar */}
+          <div className="hidden lg:block space-y-3">
+            <div className="text-xs font-medium text-muted-foreground flex items-center gap-1.5 mb-1">
+              <Camera className="w-3.5 h-3.5" /> Proctoring
+            </div>
+            <WebcamProctor sessionId={sessionId || ''} userId={user?.id || ''} />
+          </div>
+        </div>
       </div>
     </div>
   );
