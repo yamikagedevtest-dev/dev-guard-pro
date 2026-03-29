@@ -57,6 +57,12 @@ const CodingTest = () => {
       cheat_status: cheatProb > 60 ? 'cheated' : cheatProb > 30 ? 'suspicious' : 'clean',
     }).eq('id', sessionId);
 
+    // In-app notification with results summary
+    toast({
+      title: "🎉 Test Completed!",
+      description: `Score: ${Math.round(percentage)}% | Trust: ${trustScore}% | ${(allAnswers || []).length} questions answered`,
+    });
+
     navigate(`/results/${sessionId}`);
   }, [sessionId, navigate]);
 
