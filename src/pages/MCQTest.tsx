@@ -7,8 +7,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAntiCheat } from "@/hooks/useAntiCheat";
 import { useToast } from "@/hooks/use-toast";
-import { Timer, AlertTriangle, Shield, ArrowRight } from "lucide-react";
+import { Timer, AlertTriangle, Shield, ArrowRight, Camera } from "lucide-react";
 import type { User } from "@supabase/supabase-js";
+import WebcamProctor from "@/components/WebcamProctor";
 
 const MCQTest = () => {
   const { sessionId } = useParams();

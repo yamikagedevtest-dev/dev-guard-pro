@@ -8,10 +8,11 @@ import { useAntiCheat } from "@/hooks/useAntiCheat";
 import { useEditorEvents } from "@/hooks/useEditorEvents";
 import { useToast } from "@/hooks/use-toast";
 import Editor, { type OnMount } from "@monaco-editor/react";
-import { Timer, AlertTriangle, Play, Send, Terminal, X } from "lucide-react";
+import { Timer, AlertTriangle, Play, Send, Terminal, X, Camera } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { User } from "@supabase/supabase-js";
+import WebcamProctor from "@/components/WebcamProctor";
 
 const LANGUAGES = [
   { value: "javascript", label: "JavaScript" },
