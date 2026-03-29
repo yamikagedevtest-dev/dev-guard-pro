@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Shield, Brain, Code, Trophy, Zap, Users, ArrowRight, CheckCircle } from "lucide-react";
 import Logo from "@/components/Logo";
+import heroBg from "@/assets/hero-bg.jpg";
 
 const features = [
   { icon: Code, title: "Multi-Round Testing", desc: "MCQ, coding challenges, and adaptive difficulty that scales with your performance." },
