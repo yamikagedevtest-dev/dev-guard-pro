@@ -1,0 +1,66 @@
+
+INSERT INTO mcq_questions (category, difficulty, question, options, correct_answer, negative_marks) VALUES
+('JavaScript', 'easy', 'What is the output of typeof null in JavaScript?', '["undefined", "null", "object", "string"]', 2, 0.25),
+('JavaScript', 'easy', 'Which method converts a JSON string to a JavaScript object?', '["JSON.stringify()", "JSON.parse()", "JSON.convert()", "JSON.object()"]', 1, 0.25),
+('JavaScript', 'easy', 'What does === check in JavaScript?', '["Value only", "Type only", "Value and type", "Reference"]', 2, 0.25),
+('JavaScript', 'medium', 'What is a closure in JavaScript?', '["A loop structure", "A function with access to its outer scope", "A type of variable", "An error handler"]', 1, 0.5),
+('JavaScript', 'medium', 'What does the spread operator (...) do?', '["Removes elements", "Expands an iterable", "Creates a closure", "Defines a class"]', 1, 0.5),
+('JavaScript', 'medium', 'What is event delegation?', '["Removing events", "Attaching events to parent elements", "Creating custom events", "Preventing default"]', 1, 0.5),
+('JavaScript', 'hard', 'What is the output of: console.log(0.1 + 0.2 === 0.3)?', '["true", "false", "undefined", "NaN"]', 1, 1),
+('JavaScript', 'hard', 'What is the purpose of WeakMap?', '["Store primitive keys", "Garbage-collectible key references", "Faster iteration", "Immutable data"]', 1, 1),
+('Python', 'easy', 'How do you create a dictionary in Python?', '["[]", "()", "{}", "<>"]', 2, 0.25),
+('Python', 'medium', 'What is a decorator in Python?', '["A class method", "A function that modifies another function", "A loop construct", "A data type"]', 1, 0.5),
+('Python', 'medium', 'What does the yield keyword do?', '["Returns a value and exits", "Pauses function and returns a value", "Throws an error", "Creates a class"]', 1, 0.5),
+('Python', 'hard', 'What is the GIL in Python?', '["A data structure", "Global Interpreter Lock", "A web framework", "A testing tool"]', 1, 1),
+('TypeScript', 'easy', 'What is TypeScript?', '["A database", "A typed superset of JavaScript", "A CSS framework", "A build tool"]', 1, 0.25),
+('TypeScript', 'medium', 'What is a union type in TypeScript?', '["A class", "A type that can be one of several types", "An interface", "A module"]', 1, 0.5),
+('TypeScript', 'medium', 'What does the readonly modifier do?', '["Makes property private", "Prevents reassignment", "Makes property optional", "Deletes property"]', 1, 0.5),
+('TypeScript', 'hard', 'What are conditional types in TypeScript?', '["Runtime checks", "Types that depend on a condition", "Error handlers", "Module imports"]', 1, 1),
+('Data Structures', 'easy', 'What is the time complexity of array access by index?', '["O(n)", "O(1)", "O(log n)", "O(n^2)"]', 1, 0.25),
+('Data Structures', 'easy', 'Which data structure uses FIFO?', '["Stack", "Queue", "Tree", "Graph"]', 1, 0.25),
+('Data Structures', 'medium', 'What is the average time complexity of hash table lookup?', '["O(n)", "O(1)", "O(log n)", "O(n log n)"]', 1, 0.5),
+('Data Structures', 'hard', 'What is amortized O(1) in dynamic arrays?', '["Always O(1)", "Average over many operations is O(1)", "Best case O(1)", "Worst case O(1)"]', 1, 1),
+('Algorithms', 'easy', 'What is binary search time complexity?', '["O(n)", "O(log n)", "O(1)", "O(n^2)"]', 1, 0.25),
+('Algorithms', 'medium', 'Which sorting algorithm is stable?', '["Quick Sort", "Heap Sort", "Merge Sort", "Selection Sort"]', 2, 0.5),
+('Algorithms', 'hard', 'What is dynamic programming?', '["Faster loops", "Solving problems by breaking into overlapping subproblems", "A design pattern", "A sorting technique"]', 1, 1),
+('React', 'easy', 'What is JSX?', '["JavaScript XML syntax extension", "A database", "A testing framework", "A CSS preprocessor"]', 0, 0.25),
+('React', 'medium', 'What is the purpose of useEffect?', '["State management", "Side effects in components", "Routing", "Styling"]', 1, 0.5),
+('React', 'hard', 'What is React reconciliation?', '["State management", "Diffing algorithm for DOM updates", "Routing mechanism", "Build optimization"]', 1, 1),
+('System Design', 'medium', 'What is horizontal scaling?', '["Adding more RAM", "Adding more servers", "Optimizing code", "Caching"]', 1, 0.5),
+('System Design', 'hard', 'What is the CAP theorem?', '["Consistency, Availability, Partition tolerance tradeoff", "Create, Access, Process", "Cache, API, Protocol", "Compute, Analyze, Predict"]', 0, 1);
+
+INSERT INTO coding_challenges (title, description, difficulty, category, test_cases, hidden_test_cases, starter_code) VALUES
+('Fibonacci Sequence', 'Write a function that returns the nth Fibonacci number. The sequence starts with 0, 1, 1, 2, 3, 5, 8...', 'easy', 'algorithms',
+ '[{"input": "fibonacci(0)", "expected": "0"}, {"input": "fibonacci(5)", "expected": "5"}, {"input": "fibonacci(10)", "expected": "55"}]',
+ '[{"input": "fibonacci(1)", "expected": "1"}, {"input": "fibonacci(20)", "expected": "6765"}, {"input": "fibonacci(30)", "expected": "832040"}]',
+ '{"javascript": "function fibonacci(n) {\n  // Your code here\n}\n", "python": "def fibonacci(n):\n    # Your code here\n    pass\n", "typescript": "function fibonacci(n: number): number {\n  // Your code here\n}\n", "java": "public static int fibonacci(int n) {\n  // Your code here\n}\n", "cpp": "int fibonacci(int n) {\n  // Your code here\n}\n"}'),
+
+('Palindrome Check', 'Write a function that checks if a given string is a palindrome (reads the same forwards and backwards). Ignore case and non-alphanumeric characters.', 'easy', 'strings',
+ '[{"input": "isPalindrome(\"racecar\")", "expected": "true"}, {"input": "isPalindrome(\"hello\")", "expected": "false"}]',
+ '[{"input": "isPalindrome(\"A man a plan a canal Panama\")", "expected": "true"}, {"input": "isPalindrome(\"\")", "expected": "true"}]',
+ '{"javascript": "function isPalindrome(s) {\n  // Your code here\n}\n", "python": "def is_palindrome(s):\n    # Your code here\n    pass\n", "typescript": "function isPalindrome(s: string): boolean {\n  // Your code here\n}\n"}'),
+
+('Merge Sorted Arrays', 'Given two sorted arrays, merge them into a single sorted array without using built-in sort functions.', 'medium', 'arrays',
+ '[{"input": "merge([1,3,5], [2,4,6])", "expected": "[1,2,3,4,5,6]"}, {"input": "merge([1], [2,3])", "expected": "[1,2,3]"}]',
+ '[{"input": "merge([], [1,2])", "expected": "[1,2]"}, {"input": "merge([1,1,1], [1,1])", "expected": "[1,1,1,1,1]"}]',
+ '{"javascript": "function merge(arr1, arr2) {\n  // Your code here\n}\n", "python": "def merge(arr1, arr2):\n    # Your code here\n    pass\n", "typescript": "function merge(arr1: number[], arr2: number[]): number[] {\n  // Your code here\n}\n"}'),
+
+('Binary Search', 'Implement binary search on a sorted array. Return the index of the target element or -1 if not found.', 'medium', 'algorithms',
+ '[{"input": "binarySearch([1,3,5,7,9], 5)", "expected": "2"}, {"input": "binarySearch([1,3,5,7,9], 4)", "expected": "-1"}]',
+ '[{"input": "binarySearch([1], 1)", "expected": "0"}, {"input": "binarySearch([], 5)", "expected": "-1"}, {"input": "binarySearch([1,2,3,4,5,6,7,8,9,10], 10)", "expected": "9"}]',
+ '{"javascript": "function binarySearch(arr, target) {\n  // Your code here\n}\n", "python": "def binary_search(arr, target):\n    # Your code here\n    pass\n", "typescript": "function binarySearch(arr: number[], target: number): number {\n  // Your code here\n}\n"}'),
+
+('Longest Common Prefix', 'Find the longest common prefix string among an array of strings. Return empty string if none.', 'medium', 'strings',
+ '[{"input": "longestPrefix([\"flower\",\"flow\",\"flight\"])", "expected": "\"fl\""}, {"input": "longestPrefix([\"dog\",\"racecar\",\"car\"])", "expected": "\"\""}]',
+ '[{"input": "longestPrefix([\"a\"])", "expected": "\"a\""}, {"input": "longestPrefix([\"\"])", "expected": "\"\""}]',
+ '{"javascript": "function longestPrefix(strs) {\n  // Your code here\n}\n", "python": "def longest_prefix(strs):\n    # Your code here\n    pass\n", "typescript": "function longestPrefix(strs: string[]): string {\n  // Your code here\n}\n"}'),
+
+('Flatten Nested Array', 'Write a function to deeply flatten a nested array. Do not use Array.flat().', 'hard', 'arrays',
+ '[{"input": "flatten([1,[2,[3,[4]]]])", "expected": "[1,2,3,4]"}, {"input": "flatten([[1,2],[3,4]])", "expected": "[1,2,3,4]"}]',
+ '[{"input": "flatten([])", "expected": "[]"}, {"input": "flatten([1,2,3])", "expected": "[1,2,3]"}, {"input": "flatten([[[1]],[[2]],[[3]]])", "expected": "[1,2,3]"}]',
+ '{"javascript": "function flatten(arr) {\n  // Your code here\n}\n", "python": "def flatten(arr):\n    # Your code here\n    pass\n", "typescript": "function flatten(arr: any[]): number[] {\n  // Your code here\n}\n"}'),
+
+('LRU Cache', 'Design and implement a Least Recently Used (LRU) cache with get and put operations in O(1) time.', 'hard', 'data-structures',
+ '[{"input": "cache = new LRUCache(2); cache.put(1,1); cache.put(2,2); cache.get(1)", "expected": "1"}]',
+ '[{"input": "cache.put(3,3); cache.get(2)", "expected": "-1"}]',
+ '{"javascript": "class LRUCache {\n  constructor(capacity) {\n    // Your code here\n  }\n  get(key) {\n    // Your code here\n  }\n  put(key, value) {\n    // Your code here\n  }\n}\n", "python": "class LRUCache:\n    def __init__(self, capacity):\n        # Your code here\n        pass\n    def get(self, key):\n        # Your code here\n        pass\n    def put(self, key, value):\n        # Your code here\n        pass\n"}');
