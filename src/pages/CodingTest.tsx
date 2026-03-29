@@ -8,10 +8,11 @@ import { useAntiCheat } from "@/hooks/useAntiCheat";
 import { useEditorEvents } from "@/hooks/useEditorEvents";
 import { useToast } from "@/hooks/use-toast";
 import Editor, { type OnMount } from "@monaco-editor/react";
-import { Timer, AlertTriangle, Play, Send, Terminal, X } from "lucide-react";
+import { Timer, AlertTriangle, Play, Send, Terminal, X, Camera } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { User } from "@supabase/supabase-js";
+import WebcamProctor from "@/components/WebcamProctor";
 
 const LANGUAGES = [
   { value: "javascript", label: "JavaScript" },
@@ -55,6 +56,12 @@ const CodingTest = () => {
       total_score: percentage, trust_score: trustScore, cheat_probability: cheatProb,
       cheat_status: cheatProb > 60 ? 'cheated' : cheatProb > 30 ? 'suspicious' : 'clean',
     }).eq('id', sessionId);
+
+    // In-app notification with results summary
+    toast({
+      title: "🎉 Test Completed!",
+      description: `Score: ${Math.round(percentage)}% | Trust: ${trustScore}% | ${(allAnswers || []).length} questions answered`,
+    });
 
     navigate(`/results/${sessionId}`);
   }, [sessionId, navigate]);
@@ -227,33 +234,44 @@ const CodingTest = () => {
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-3 h-[calc(100vh-90px)]">
-          {/* Problem Panel */}
-          <Card className="glass overflow-auto">
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-base">{currentChallenge?.title || 'Challenge'}</CardTitle>
-                <span className="text-xs text-muted-foreground font-mono">
-                  {currentIndex + 1}/{challenges.length}
-                </span>
+        <div className="grid lg:grid-cols-[280px_1fr_1fr] gap-3 h-[calc(100vh-90px)]">
+          {/* Left sidebar: Problem + Webcam */}
+          <div className="flex flex-col gap-3 overflow-auto">
+            {/* Webcam */}
+            <div className="hidden lg:block">
+              <div className="text-xs font-medium text-muted-foreground flex items-center gap-1.5 mb-1.5">
+                <Camera className="w-3.5 h-3.5" /> Proctoring
               </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground whitespace-pre-wrap leading-relaxed">{currentChallenge?.description}</p>
-              {currentChallenge?.test_cases && (
-                <div className="mt-4">
-                  <h4 className="font-semibold text-sm mb-2">Test Cases:</h4>
-                  {(Array.isArray(currentChallenge.test_cases) ? currentChallenge.test_cases : JSON.parse(currentChallenge.test_cases)).map((tc: any, i: number) => (
-                    <div key={i} className="bg-secondary/30 rounded-lg p-3 mb-2 font-mono text-xs">
-                      <div className="text-muted-foreground">Input: <span className="text-foreground">{tc.input}</span></div>
-                      <div className="text-muted-foreground">Expected: <span className="text-accent">{tc.expected}</span></div>
-                    </div>
-                  ))}
-                  <p className="text-xs text-muted-foreground mt-2">⚠️ Hidden test cases will be used for final scoring</p>
+              <WebcamProctor sessionId={sessionId || ''} userId={user?.id || ''} />
+            </div>
+
+            {/* Problem */}
+            <Card className="glass flex-1 overflow-auto">
+              <CardHeader className="pb-3">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-sm">{currentChallenge?.title || 'Challenge'}</CardTitle>
+                  <span className="text-xs text-muted-foreground font-mono">
+                    {currentIndex + 1}/{challenges.length}
+                  </span>
                 </div>
-              )}
-            </CardContent>
-          </Card>
+              </CardHeader>
+              <CardContent>
+                <p className="text-xs text-muted-foreground whitespace-pre-wrap leading-relaxed">{currentChallenge?.description}</p>
+                {currentChallenge?.test_cases && (
+                  <div className="mt-3">
+                    <h4 className="font-semibold text-xs mb-2">Test Cases:</h4>
+                    {(Array.isArray(currentChallenge.test_cases) ? currentChallenge.test_cases : JSON.parse(currentChallenge.test_cases)).map((tc: any, i: number) => (
+                      <div key={i} className="bg-secondary/30 rounded-lg p-2 mb-2 font-mono text-[11px]">
+                        <div className="text-muted-foreground">Input: <span className="text-foreground">{tc.input}</span></div>
+                        <div className="text-muted-foreground">Expected: <span className="text-accent">{tc.expected}</span></div>
+                      </div>
+                    ))}
+                    <p className="text-[10px] text-muted-foreground mt-1">⚠️ Hidden test cases used for final scoring</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
 
           {/* Editor Panel */}
           <div className="flex flex-col gap-2">

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Shield, Brain, Code, Trophy, Zap, Users, ArrowRight, CheckCircle } from "lucide-react";
 import Logo from "@/components/Logo";
+import heroBg from "@/assets/hero-bg.jpg";
 
 const features = [
   { icon: Code, title: "Multi-Round Testing", desc: "MCQ, coding challenges, and adaptive difficulty that scales with your performance." },
@@ -40,9 +41,12 @@ const Index = () => {
 
       {/* Hero */}
       <section className="pt-32 pb-24 px-6 relative">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(250_85%_65%/0.08),transparent_60%)]" />
-        <div className="absolute top-20 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-0 right-1/4 w-72 h-72 bg-accent/5 rounded-full blur-3xl animate-float" style={{ animationDelay: '3s' }} />
+        {/* Hero background image */}
+        <div className="absolute inset-0 z-0">
+          <img src={heroBg} alt="" className="w-full h-full object-cover opacity-30" width={1920} height={1080} />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/80 to-background" />
+        </div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(250_85%_65%/0.12),transparent_60%)]" />
         
         <div className="container mx-auto text-center relative z-10 max-w-4xl">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
