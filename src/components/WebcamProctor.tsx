@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Camera, CameraOff, AlertTriangle, Eye } from "lucide-react";
+import { CameraOff, AlertTriangle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface WebcamProctorProps {
@@ -21,24 +21,63 @@ export default function WebcamProctor({ sessionId, userId, onViolation }: Webcam
   const [faceDetected, setFaceDetected] = useState(true);
   const [permissionDenied, setPermissionDenied] = useState(false);
   const [warningMessage, setWarningMessage] = useState("");
+  const [snapshotCount, setSnapshotCount] = useState(0);
 
   const { toast } = useToast();
 
-  const logViolation = useCallback(async (type: string, details?: Record<string, unknown>) => {
-    if (sessionId && userId) {
-      await supabase.from("violations").insert({
-        session_id: sessionId,
-        user_id: userId,
-        violation_type: type,
-        details: details as any,
-        severity: "medium",
+  // Capture a snapshot from the canvas and upload to Supabase Storage
+  const captureSnapshot = useCallback(async (violationType: string) => {
+    if (!canvasRef.current || !sessionId || !userId) return null;
+    const canvas = canvasRef.current;
+    
+    try {
+      const blob = await new Promise<Blob | null>((resolve) => {
+        canvas.toBlob(resolve, "image/jpeg", 0.7);
       });
+      if (!blob) return null;
+
+      const timestamp = Date.now();
+      const path = `${sessionId}/${violationType}_${timestamp}.jpg`;
+      
+      const { error } = await supabase.storage
+        .from("violation-snapshots")
+        .upload(path, blob, { contentType: "image/jpeg", upsert: false });
+      
+      if (error) {
+        console.error("Snapshot upload error:", error);
+        return null;
+      }
+
+      const { data: urlData } = supabase.storage
+        .from("violation-snapshots")
+        .getPublicUrl(path);
+
+      setSnapshotCount(prev => prev + 1);
+      return urlData.publicUrl;
+    } catch (e) {
+      console.error("Snapshot capture error:", e);
+      return null;
     }
+  }, [sessionId, userId]);
+
+  const logViolation = useCallback(async (type: string, details?: Record<string, unknown>) => {
+    if (!sessionId || !userId) return;
+
+    // Capture snapshot on every violation
+    const snapshotUrl = await captureSnapshot(type);
+
+    await supabase.from("violations").insert({
+      session_id: sessionId,
+      user_id: userId,
+      violation_type: type,
+      details: { ...details, snapshot_url: snapshotUrl } as any,
+      severity: type === "multiple_faces" ? "high" : "medium",
+    });
+
     onViolation?.(type);
-  }, [sessionId, userId, onViolation]);
+  }, [sessionId, userId, onViolation, captureSnapshot]);
 
   const initFaceDetector = useCallback(async () => {
-    // Use the browser's FaceDetector API if available (Chrome/Edge)
     if ("FaceDetector" in window) {
       try {
         detectorRef.current = new (window as any).FaceDetector({ maxDetectedFaces: 5, fastMode: true });
@@ -71,10 +110,6 @@ export default function WebcamProctor({ sessionId, userId, onViolation }: Webcam
             logViolation("no_face_detected", { consecutiveChecks: noFaceCountRef.current });
             toast({ title: "⚠️ Face Not Detected", description: "Please position yourself in front of the camera.", variant: "destructive" });
           }
-          if (noFaceCountRef.current >= 2 && faces.length > 1) {
-            setWarningMessage("Multiple faces detected!");
-            logViolation("multiple_faces", { faceCount: faces.length });
-          }
         } else {
           if (faces.length > 1) {
             setWarningMessage("Multiple faces detected! Only one person allowed.");
@@ -86,10 +121,10 @@ export default function WebcamProctor({ sessionId, userId, onViolation }: Webcam
           setFaceDetected(true);
         }
       } catch {
-        // FaceDetector not working, fallback to just monitoring camera
+        // FaceDetector not working, fallback
       }
     } else {
-      // No FaceDetector API — just verify camera feed is active
+      // No FaceDetector API — verify camera feed is active
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
       let darkPixels = 0;
@@ -125,10 +160,7 @@ export default function WebcamProctor({ sessionId, userId, onViolation }: Webcam
       }
       setCameraActive(true);
       setPermissionDenied(false);
-
       await initFaceDetector();
-
-      // Check for face every 3 seconds
       checkIntervalRef.current = setInterval(checkForFace, 3000);
     } catch (err: any) {
       console.error("Camera error:", err);
@@ -146,7 +178,6 @@ export default function WebcamProctor({ sessionId, userId, onViolation }: Webcam
     };
   }, []);
 
-  // Restart interval when checkForFace changes
   useEffect(() => {
     if (cameraActive && checkIntervalRef.current) {
       clearInterval(checkIntervalRef.current);
@@ -156,20 +187,13 @@ export default function WebcamProctor({ sessionId, userId, onViolation }: Webcam
 
   return (
     <div className="relative">
-      {/* Webcam feed */}
       <div className={`relative rounded-xl overflow-hidden border-2 transition-colors ${
         !faceDetected ? "border-destructive shadow-[0_0_15px_hsl(0_72%_51%/0.3)]" :
         cameraActive ? "border-accent/50 shadow-[0_0_10px_hsl(145_65%_42%/0.15)]" :
         "border-border"
       }`}>
-        <video
-          ref={videoRef}
-          autoPlay
-          playsInline
-          muted
-          className="w-full h-auto rounded-xl"
-          style={{ maxHeight: 180, objectFit: "cover", transform: "scaleX(-1)" }}
-        />
+        <video ref={videoRef} autoPlay playsInline muted className="w-full h-auto rounded-xl"
+          style={{ maxHeight: 180, objectFit: "cover", transform: "scaleX(-1)" }} />
         <canvas ref={canvasRef} className="hidden" />
 
         {/* Status overlay */}
@@ -183,28 +207,27 @@ export default function WebcamProctor({ sessionId, userId, onViolation }: Webcam
             </div>
           ) : (
             <div className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-destructive/20 text-destructive">
-              <CameraOff className="w-3 h-3" />
-              Off
+              <CameraOff className="w-3 h-3" /> Off
             </div>
           )}
         </div>
 
-        {/* Retry button when permission denied */}
+        {/* Snapshot counter */}
+        {snapshotCount > 0 && (
+          <div className="absolute top-2 right-2 px-1.5 py-0.5 rounded-full text-[9px] font-medium bg-destructive/80 text-destructive-foreground">
+            📸 {snapshotCount}
+          </div>
+        )}
+
         {permissionDenied && (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-card/90 gap-2">
             <CameraOff className="w-8 h-8 text-muted-foreground" />
             <p className="text-xs text-muted-foreground text-center px-2">Camera access required</p>
-            <button
-              onClick={startCamera}
-              className="text-xs text-primary underline hover:no-underline"
-            >
-              Retry
-            </button>
+            <button onClick={startCamera} className="text-xs text-primary underline hover:no-underline">Retry</button>
           </div>
         )}
       </div>
 
-      {/* Warning banner */}
       {warningMessage && (
         <div className="mt-2 flex items-center gap-2 px-3 py-2 rounded-lg bg-destructive/10 border border-destructive/30 text-destructive text-xs animate-pulse">
           <AlertTriangle className="w-3.5 h-3.5 flex-shrink-0" />

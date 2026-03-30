@@ -1,17 +1,19 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Shield, Brain, Code, Trophy, Zap, Users, ArrowRight, CheckCircle } from "lucide-react";
+import { Shield, Brain, Code, Trophy, Zap, Users, ArrowRight } from "lucide-react";
 import Logo from "@/components/Logo";
+import GlowCard from "@/components/GlowCard";
+import AnimatedIcon from "@/components/AnimatedIcon";
 import heroBg from "@/assets/hero-bg.jpg";
 
 const features = [
-  { icon: Code, title: "Multi-Round Testing", desc: "MCQ, coding challenges, and adaptive difficulty that scales with your performance." },
-  { icon: Shield, title: "Anti-Cheat Engine", desc: "Real-time monitoring: copy/paste blocking, tab detection, keystroke analysis, behavioral scoring." },
-  { icon: Brain, title: "AI Analysis", desc: "Code originality detection, AI-generated code flagging, and behavioral trust scoring." },
-  { icon: Trophy, title: "Verified Certificates", desc: "Tamper-proof certificates with QR verification and unique IDs." },
-  { icon: Users, title: "Admin Dashboard", desc: "Full candidate analytics, code playback, cheat flagging, and submission review." },
-  { icon: Zap, title: "Adaptive Engine", desc: "Questions adjust difficulty in real-time. Easy → Medium → Hard → Expert." },
+  { icon: Code, title: "Multi-Round Testing", desc: "MCQ, coding challenges, and adaptive difficulty that scales with your performance.", variant: "bounce" as const },
+  { icon: Shield, title: "Anti-Cheat Engine", desc: "Real-time monitoring: copy/paste blocking, tab detection, keystroke analysis, behavioral scoring.", variant: "pulse" as const },
+  { icon: Brain, title: "AI Analysis", desc: "Code originality detection, AI-generated code flagging, and behavioral trust scoring.", variant: "glow" as const },
+  { icon: Trophy, title: "Verified Certificates", desc: "Tamper-proof certificates with QR verification and unique IDs.", variant: "float" as const },
+  { icon: Users, title: "Admin Dashboard", desc: "Full candidate analytics, code playback, cheat flagging, and submission review.", variant: "bounce" as const },
+  { icon: Zap, title: "Adaptive Engine", desc: "Questions adjust difficulty in real-time. Easy → Medium → Hard → Expert.", variant: "pulse" as const },
 ];
 
 const stats = [
@@ -41,9 +43,8 @@ const Index = () => {
 
       {/* Hero */}
       <section className="pt-32 pb-24 px-6 relative">
-        {/* Hero background image */}
         <div className="absolute inset-0 z-0">
-          <img src={heroBg} alt="" className="w-full h-full object-cover opacity-30" width={1920} height={1080} />
+          <img src={heroBg} alt="" className="w-full h-full object-cover opacity-30" width={1920} height={1080} loading="eager" />
           <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/80 to-background" />
         </div>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(250_85%_65%/0.12),transparent_60%)]" />
@@ -80,14 +81,8 @@ const Index = () => {
         <div className="container mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {stats.map((s, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-                viewport={{ once: true }}
-                className="text-center"
-              >
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }} viewport={{ once: true }} className="text-center">
                 <div className="text-3xl md:text-4xl font-extrabold gradient-text">{s.value}</div>
                 <p className="text-sm text-muted-foreground mt-1">{s.label}</p>
               </motion.div>
@@ -107,19 +102,15 @@ const Index = () => {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
             {features.map((f, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.08 }}
-                viewport={{ once: true }}
-                className="glass rounded-xl p-6 card-hover group"
-              >
-                <div className="w-11 h-11 rounded-lg gradient-primary flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <f.icon className="w-5 h-5 text-primary-foreground" />
-                </div>
-                <h3 className="text-lg font-semibold mb-2">{f.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{f.desc}</p>
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.08 }} viewport={{ once: true }}>
+                <GlowCard>
+                  <div className="w-11 h-11 rounded-lg gradient-primary flex items-center justify-center mb-4">
+                    <AnimatedIcon icon={f.icon} size={20} className="text-primary-foreground" variant={f.variant} />
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2">{f.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{f.desc}</p>
+                </GlowCard>
               </motion.div>
             ))}
           </div>
@@ -137,14 +128,8 @@ const Index = () => {
               { step: "03", title: "AI Evaluates Results", desc: "Anti-cheat engine + AI analyzes code originality, typing patterns, and behavior." },
               { step: "04", title: "Get Verified Certificate", desc: "Receive a tamper-proof certificate with QR verification, shareable anywhere." },
             ].map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.1 }}
-                viewport={{ once: true }}
-                className="flex gap-6 items-start"
-              >
+              <motion.div key={i} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.1 }} viewport={{ once: true }} className="flex gap-6 items-start">
                 <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center flex-shrink-0 text-sm font-bold text-primary-foreground">
                   {item.step}
                 </div>
@@ -161,9 +146,8 @@ const Index = () => {
       {/* CTA */}
       <section className="py-24 px-6">
         <div className="container mx-auto max-w-3xl">
-          <div className="glass rounded-2xl p-12 text-center glow relative overflow-hidden">
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(250_85%_65%/0.06),transparent_70%)]" />
-            <div className="relative z-10">
+          <GlowCard hoverScale={false} className="glow">
+            <div className="text-center py-6">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Find Elite Developers?</h2>
               <p className="text-muted-foreground mb-8 max-w-lg mx-auto">
                 Join companies that trust Yamikage to identify verified top talent with confidence.
@@ -172,7 +156,7 @@ const Index = () => {
                 Get Started Free <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </div>
-          </div>
+          </GlowCard>
         </div>
       </section>
 
