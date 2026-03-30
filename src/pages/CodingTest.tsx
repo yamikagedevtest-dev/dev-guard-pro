@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { User } from "@supabase/supabase-js";
 import WebcamProctor from "@/components/WebcamProctor";
+import ChipLoader from "@/components/ChipLoader";
 
 const LANGUAGES = [
   { value: "javascript", label: "JavaScript" },
@@ -203,7 +204,7 @@ const CodingTest = () => {
   });
   const displayLangs = availableLanguages.length > 0 ? availableLanguages : LANGUAGES;
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin w-8 h-8 border-2 border-primary border-t-transparent rounded-full" /></div>;
+  if (loading) return <div className="min-h-screen flex items-center justify-center"><ChipLoader text="Loading Code" /></div>;
 
   const diffColor = currentChallenge?.difficulty === 'easy' ? 'border-accent/30 text-accent' : currentChallenge?.difficulty === 'medium' ? 'border-warning/30 text-warning' : 'border-destructive/30 text-destructive';
 

@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { Trophy, Medal, ArrowLeft, Shield, TrendingUp } from "lucide-react";
 import Logo from "@/components/Logo";
 import { motion } from "framer-motion";
+import ChipLoader from "@/components/ChipLoader";
+import AnimatedIcon from "@/components/AnimatedIcon";
 
 const Leaderboard = () => {
   const navigate = useNavigate();
@@ -44,7 +46,7 @@ const Leaderboard = () => {
     return <span className="w-5 h-5 flex items-center justify-center text-xs font-bold text-muted-foreground">#{rank}</span>;
   };
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin w-8 h-8 border-2 border-primary border-t-transparent rounded-full" /></div>;
+  if (loading) return <div className="min-h-screen flex items-center justify-center"><ChipLoader text="Rankings" /></div>;
 
   return (
     <div className="min-h-screen p-4 md:p-8">

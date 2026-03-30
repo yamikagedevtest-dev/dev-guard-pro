@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useParams } from "react-router-dom";
 import { CheckCircle, XCircle } from "lucide-react";
 import Logo from "@/components/Logo";
+import ChipLoader from "@/components/ChipLoader";
 
 const CertificateVerify = () => {
   const { certificateId } = useParams();
@@ -18,7 +19,7 @@ const CertificateVerify = () => {
       .then(({ data, error }) => { if (error || !data) setNotFound(true); else setCert(data); setLoading(false); });
   }, [certificateId]);
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin w-8 h-8 border-2 border-primary border-t-transparent rounded-full" /></div>;
+  if (loading) return <div className="min-h-screen flex items-center justify-center"><ChipLoader text="Verifying" /></div>;
 
   return (
     <div className="min-h-screen flex items-center justify-center p-6 relative">

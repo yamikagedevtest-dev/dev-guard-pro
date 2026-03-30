@@ -9,6 +9,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { Shield, LogOut, Users, CheckCircle, AlertTriangle, XCircle, Eye } from "lucide-react";
 import Logo from "@/components/Logo";
+import AnimatedIcon from "@/components/AnimatedIcon";
+import ChipLoader from "@/components/ChipLoader";
 
 const AdminPanel = () => {
   const navigate = useNavigate();
@@ -53,7 +55,7 @@ const AdminPanel = () => {
     return <Badge variant="outline" className={`text-xs ${styles[status as keyof typeof styles] || ''}`}>{status}</Badge>;
   };
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin w-8 h-8 border-2 border-primary border-t-transparent rounded-full" /></div>;
+  if (loading) return <div className="min-h-screen flex items-center justify-center"><ChipLoader text="Loading" /></div>;
 
   return (
     <div className="min-h-screen p-4 md:p-8">
@@ -73,16 +75,16 @@ const AdminPanel = () => {
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           {[
-            { icon: Users, label: 'Total Tests', value: sessions.length, color: 'gradient-primary' },
-            { icon: CheckCircle, label: 'Clean', value: sessions.filter(s => s.cheat_status === 'clean').length, color: 'gradient-accent' },
-            { icon: AlertTriangle, label: 'Suspicious', value: sessions.filter(s => s.cheat_status === 'suspicious').length, color: 'bg-warning/20' },
-            { icon: XCircle, label: 'Cheated', value: sessions.filter(s => s.cheat_status === 'cheated').length, color: 'bg-destructive/20' },
+            { icon: Users, label: 'Total Tests', value: sessions.length, color: 'gradient-primary', variant: 'bounce' as const },
+            { icon: CheckCircle, label: 'Clean', value: sessions.filter(s => s.cheat_status === 'clean').length, color: 'gradient-accent', variant: 'pulse' as const },
+            { icon: AlertTriangle, label: 'Suspicious', value: sessions.filter(s => s.cheat_status === 'suspicious').length, color: 'bg-warning/20', variant: 'float' as const },
+            { icon: XCircle, label: 'Cheated', value: sessions.filter(s => s.cheat_status === 'cheated').length, color: 'bg-destructive/20', variant: 'pulse' as const },
           ].map((s, i) => (
             <Card key={i} className="glass card-hover">
               <CardContent className="pt-6 pb-4">
                 <div className="flex items-center gap-3">
                   <div className={`w-10 h-10 rounded-lg ${s.color} flex items-center justify-center`}>
-                    <s.icon className="w-5 h-5 text-primary-foreground" />
+                    <AnimatedIcon icon={s.icon} size={20} className="text-primary-foreground" variant={s.variant} />
                   </div>
                   <div>
                     <div className="text-2xl font-bold">{s.value}</div>

@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowLeft, Camera, Save, User, MapPin, Briefcase, Github, Globe, Mail, Phone } from "lucide-react";
 import Logo from "@/components/Logo";
+import ChipLoader from "@/components/ChipLoader";
 import type { User as AuthUser } from "@supabase/supabase-js";
 
 const Profile = () => {
@@ -100,7 +101,7 @@ const Profile = () => {
     setSaving(false);
   };
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin w-8 h-8 border-2 border-primary border-t-transparent rounded-full" /></div>;
+  if (loading) return <div className="min-h-screen flex items-center justify-center"><ChipLoader text="Profile" /></div>;
 
   const initials = fullName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
 

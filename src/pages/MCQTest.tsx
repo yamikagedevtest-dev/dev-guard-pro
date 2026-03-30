@@ -10,6 +10,8 @@ import { useToast } from "@/hooks/use-toast";
 import { Timer, AlertTriangle, Shield, ArrowRight, Camera } from "lucide-react";
 import type { User } from "@supabase/supabase-js";
 import WebcamProctor from "@/components/WebcamProctor";
+import ChipLoader from "@/components/ChipLoader";
+import AnimatedIcon from "@/components/AnimatedIcon";
 
 const MCQTest = () => {
   const { sessionId } = useParams();
@@ -119,7 +121,7 @@ const MCQTest = () => {
   const formatTime = (s: number) => `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, '0')}`;
 
   if (loading && questions.length === 0) {
-    return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin w-8 h-8 border-2 border-primary border-t-transparent rounded-full" /></div>;
+    return <div className="min-h-screen flex items-center justify-center"><ChipLoader text="Loading MCQ" /></div>;
   }
 
   const diffColor = difficulty === 'easy' ? 'border-accent/30 text-accent' : difficulty === 'medium' ? 'border-warning/30 text-warning' : 'border-destructive/30 text-destructive';

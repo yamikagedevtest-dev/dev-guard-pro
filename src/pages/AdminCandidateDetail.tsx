@@ -5,8 +5,10 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Shield, AlertTriangle, Code, Trophy, User } from "lucide-react";
+import { ArrowLeft, Shield, AlertTriangle, Code, Trophy, User, Camera, Image } from "lucide-react";
 import CodePlayback from "@/components/CodePlayback";
+import AnimatedIcon from "@/components/AnimatedIcon";
+import ChipLoader from "@/components/ChipLoader";
 import Editor from "@monaco-editor/react";
 
 const AdminCandidateDetail = () => {
@@ -18,6 +20,7 @@ const AdminCandidateDetail = () => {
   const [violations, setViolations] = useState<any[]>([]);
   const [skills, setSkills] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedSnapshot, setSelectedSnapshot] = useState<string | null>(null);
 
   useEffect(() => {
     if (!sessionId) return;
@@ -45,18 +48,20 @@ const AdminCandidateDetail = () => {
     load();
   }, [sessionId]);
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin w-8 h-8 border-2 border-primary border-t-transparent rounded-full" /></div>;
+  if (loading) return <div className="min-h-screen flex items-center justify-center"><ChipLoader text="Loading" /></div>;
 
   const codingAnswers = answers.filter(a => a.question_type === 'coding');
   const mcqAnswers = answers.filter(a => a.question_type === 'mcq');
   const editorEvents = violations.filter(v => v.violation_type === 'editor_events');
   const realViolations = violations.filter(v => v.violation_type !== 'editor_events');
 
-  // Flatten editor events for playback
   const allEditorEvents = editorEvents.flatMap(v => {
     const details = v.details as any;
     return details?.events || [];
   });
+
+  // Extract violations with snapshots
+  const violationsWithSnapshots = realViolations.filter(v => (v.details as any)?.snapshot_url);
 
   const statusColor = session?.cheat_status === 'clean' ? 'text-accent' : session?.cheat_status === 'suspicious' ? 'text-yellow-500' : 'text-destructive';
 
@@ -71,7 +76,7 @@ const AdminCandidateDetail = () => {
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 rounded-full bg-primary/20 flex items-center justify-center">
-              <User className="w-7 h-7 text-primary" />
+              <AnimatedIcon icon={User} size={28} className="text-primary" variant="glow" />
             </div>
             <div>
               <h1 className="text-2xl font-bold">{profile?.full_name || 'Unknown'}</h1>
@@ -111,10 +116,11 @@ const AdminCandidateDetail = () => {
 
         <Tabs defaultValue="code" className="space-y-4">
           <TabsList className="glass">
-            <TabsTrigger value="code"><Code className="w-4 h-4 mr-1" /> Code Submissions</TabsTrigger>
+            <TabsTrigger value="code"><AnimatedIcon icon={Code} size={16} variant="bounce" className="mr-1" /> Code Submissions</TabsTrigger>
             <TabsTrigger value="playback">🎥 Playback</TabsTrigger>
-            <TabsTrigger value="violations"><AlertTriangle className="w-4 h-4 mr-1" /> Violations</TabsTrigger>
-            <TabsTrigger value="mcq"><Shield className="w-4 h-4 mr-1" /> MCQ Answers</TabsTrigger>
+            <TabsTrigger value="violations"><AnimatedIcon icon={AlertTriangle} size={16} variant="pulse" className="mr-1" /> Violations</TabsTrigger>
+            <TabsTrigger value="snapshots"><AnimatedIcon icon={Camera} size={16} variant="glow" className="mr-1" /> Snapshots ({violationsWithSnapshots.length})</TabsTrigger>
+            <TabsTrigger value="mcq"><AnimatedIcon icon={Shield} size={16} variant="glow" className="mr-1" /> MCQ Answers</TabsTrigger>
           </TabsList>
 
           <TabsContent value="code">
@@ -132,19 +138,8 @@ const AdminCandidateDetail = () => {
                     </CardHeader>
                     <CardContent>
                       <div className="rounded-lg overflow-hidden border border-border h-[300px]">
-                        <Editor
-                          height="100%"
-                          language="javascript"
-                          value={a.code_submission || '// No code submitted'}
-                          theme="vs-dark"
-                          options={{
-                            readOnly: true,
-                            fontSize: 13,
-                            minimap: { enabled: false },
-                            fontFamily: "'JetBrains Mono', monospace",
-                            scrollBeyondLastLine: false,
-                          }}
-                        />
+                        <Editor height="100%" language="javascript" value={a.code_submission || '// No code submitted'} theme="vs-dark"
+                          options={{ readOnly: true, fontSize: 13, minimap: { enabled: false }, fontFamily: "'JetBrains Mono', monospace", scrollBeyondLastLine: false }} />
                       </div>
                     </CardContent>
                   </Card>
@@ -155,16 +150,10 @@ const AdminCandidateDetail = () => {
 
           <TabsContent value="playback">
             <Card className="glass">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">🎥 Code Playback</CardTitle>
-              </CardHeader>
+              <CardHeader><CardTitle className="flex items-center gap-2">🎥 Code Playback</CardTitle></CardHeader>
               <CardContent>
                 {allEditorEvents.length > 0 ? (
-                  <CodePlayback
-                    events={allEditorEvents}
-                    finalCode={codingAnswers[0]?.code_submission || ''}
-                    language="javascript"
-                  />
+                  <CodePlayback events={allEditorEvents} finalCode={codingAnswers[0]?.code_submission || ''} language="javascript" />
                 ) : (
                   <p className="text-center text-muted-foreground py-8">No editor events recorded</p>
                 )}
@@ -187,12 +176,49 @@ const AdminCandidateDetail = () => {
                     {realViolations.map((v, i) => (
                       <div key={i} className="flex items-center justify-between p-3 rounded-lg bg-destructive/10 text-sm">
                         <div className="flex items-center gap-2">
-                          <Badge variant={v.severity === 'high' ? 'destructive' : 'outline'} className="text-xs">
-                            {v.severity}
-                          </Badge>
+                          <Badge variant={v.severity === 'high' ? 'destructive' : 'outline'} className="text-xs">{v.severity}</Badge>
                           <span>{v.violation_type.replace(/_/g, ' ')}</span>
+                          {(v.details as any)?.snapshot_url && (
+                            <Badge variant="outline" className="text-[10px] cursor-pointer border-primary/30 text-primary"
+                              onClick={() => setSelectedSnapshot((v.details as any).snapshot_url)}>
+                              📸 Has snapshot
+                            </Badge>
+                          )}
                         </div>
                         <span className="text-muted-foreground">{new Date(v.created_at).toLocaleTimeString()}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Snapshots Tab */}
+          <TabsContent value="snapshots">
+            <Card className="glass">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Camera className="w-5 h-5 text-primary" /> Violation Snapshots ({violationsWithSnapshots.length})
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {violationsWithSnapshots.length === 0 ? (
+                  <p className="text-center text-muted-foreground py-8">No snapshots captured</p>
+                ) : (
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                    {violationsWithSnapshots.map((v, i) => (
+                      <div key={i} className="relative group cursor-pointer rounded-lg overflow-hidden border border-border/40 hover:border-primary/40 transition-colors"
+                        onClick={() => setSelectedSnapshot((v.details as any).snapshot_url)}>
+                        <img src={(v.details as any).snapshot_url} alt={`Violation: ${v.violation_type}`}
+                          className="w-full h-32 object-cover" loading="lazy" />
+                        <div className="absolute bottom-0 inset-x-0 bg-background/80 backdrop-blur-sm px-2 py-1.5">
+                          <p className="text-[10px] font-medium truncate">{v.violation_type.replace(/_/g, ' ')}</p>
+                          <p className="text-[9px] text-muted-foreground">{new Date(v.created_at).toLocaleTimeString()}</p>
+                        </div>
+                        <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                          <Image className="w-6 h-6 text-primary" />
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -226,6 +252,17 @@ const AdminCandidateDetail = () => {
             </Card>
           </TabsContent>
         </Tabs>
+
+        {/* Snapshot lightbox */}
+        {selectedSnapshot && (
+          <div className="fixed inset-0 z-50 bg-background/90 backdrop-blur-md flex items-center justify-center p-4"
+            onClick={() => setSelectedSnapshot(null)}>
+            <div className="max-w-2xl w-full">
+              <img src={selectedSnapshot} alt="Violation snapshot" className="w-full rounded-xl border border-border shadow-2xl" />
+              <p className="text-center text-sm text-muted-foreground mt-4">Click anywhere to close</p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
