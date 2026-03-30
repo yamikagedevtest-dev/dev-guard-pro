@@ -2,6 +2,7 @@ import { useLocation, Link } from "react-router-dom";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
+import Logo from "@/components/Logo";
 
 const NotFound = () => {
   const location = useLocation();
@@ -11,7 +12,8 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
+    <div className="flex min-h-screen items-center justify-center flex-col gap-6">
+      <Logo size={48} />
       <div className="text-center">
         <h1 className="mb-2 text-7xl font-extrabold gradient-text">404</h1>
         <p className="mb-6 text-lg text-muted-foreground">Page not found</p>
