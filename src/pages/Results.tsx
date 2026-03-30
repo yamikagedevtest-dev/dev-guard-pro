@@ -9,6 +9,8 @@ import { Trophy, Shield, AlertTriangle, ArrowLeft, Download, Award, CheckCircle,
 import { QRCodeSVG } from "qrcode.react";
 import Logo from "@/components/Logo";
 import { useToast } from "@/hooks/use-toast";
+import ChipLoader from "@/components/ChipLoader";
+import AnimatedIcon from "@/components/AnimatedIcon";
 
 const Results = () => {
   const { sessionId } = useParams();
@@ -113,7 +115,7 @@ ${(certificate.skills || []).length > 0 ? `<div class="skills">${(certificate.sk
     window.open(url, '_blank');
   };
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin w-8 h-8 border-2 border-primary border-t-transparent rounded-full" /></div>;
+  if (loading) return <div className="min-h-screen flex items-center justify-center"><ChipLoader text="Results" /></div>;
 
   const mcqAnswers = answers.filter(a => a.question_type === 'mcq');
   const codingAnswers = answers.filter(a => a.question_type === 'coding');
