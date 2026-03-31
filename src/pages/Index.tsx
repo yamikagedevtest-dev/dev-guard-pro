@@ -30,12 +30,14 @@ const Index = () => {
     <div className="min-h-screen bg-background overflow-hidden">
       {/* Nav */}
       <nav className="fixed top-0 w-full z-50 glass-strong border-b border-border/20">
-        <div className="container mx-auto px-6 h-16 flex items-center justify-between">
-          <Logo size={32} />
-          <div className="flex items-center gap-3">
-            <Button variant="ghost" onClick={() => navigate('/login')} className="text-sm">Login</Button>
-            <Button onClick={() => navigate('/register')} className="gradient-primary text-primary-foreground text-sm">
-              Get Started <ArrowRight className="w-4 h-4 ml-1" />
+        <div className="container mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+          <Logo size={28} />
+          <div className="flex items-center gap-2 sm:gap-3">
+            <Button variant="ghost" onClick={() => navigate('/login')} className="text-sm px-2 sm:px-4">Login</Button>
+            <Button onClick={() => navigate('/register')} className="gradient-primary text-primary-foreground text-sm px-3 sm:px-4">
+              <span className="hidden sm:inline">Get Started</span>
+              <span className="sm:hidden">Start</span>
+              <ArrowRight className="w-4 h-4 ml-1" />
             </Button>
           </div>
         </div>
