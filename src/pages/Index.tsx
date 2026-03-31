@@ -44,7 +44,7 @@ const Index = () => {
       </nav>
 
       {/* Hero */}
-      <section className="pt-32 pb-24 px-6 relative">
+      <section className="pt-24 sm:pt-32 pb-16 sm:pb-24 px-4 sm:px-6 relative">
         <div className="absolute inset-0 z-0">
           <img src={heroBg} alt="" className="w-full h-full object-cover opacity-30" width={1920} height={1080} loading="eager" />
           <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/80 to-background" />
