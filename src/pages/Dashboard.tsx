@@ -37,6 +37,10 @@ const Dashboard = () => {
 
   const startTest = async () => {
     if (!user) return;
+    if (profile?.is_blocked) {
+      toast({ title: "Account Blocked", description: profile.blocked_reason || "Your account has been blocked by an admin.", variant: "destructive" });
+      return;
+    }
     const { data, error } = await supabase.from('test_sessions').insert({
       user_id: user.id, status: 'in_progress', started_at: new Date().toISOString(),
     }).select().single();
