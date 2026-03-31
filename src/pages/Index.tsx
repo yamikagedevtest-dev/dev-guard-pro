@@ -161,10 +161,10 @@ const Index = () => {
       </section>
 
       {/* Footer */}
-      <footer className="py-8 px-6 border-t border-border/20">
-        <div className="container mx-auto flex items-center justify-between text-sm text-muted-foreground">
+      <footer className="py-8 px-4 sm:px-6 border-t border-border/20">
+        <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-muted-foreground">
           <Logo size={24} />
-          <span>© 2026 Yamikage Dev Tester. All rights reserved.</span>
+          <span className="text-center">© 2026 Yamikage Dev Tester. All rights reserved.</span>
         </div>
       </footer>
     </div>
