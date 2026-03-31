@@ -13,6 +13,8 @@ import WebcamProctor from "@/components/WebcamProctor";
 import ChipLoader from "@/components/ChipLoader";
 import AnimatedIcon from "@/components/AnimatedIcon";
 
+import CameraPermissionGate from "@/components/CameraPermissionGate";
+
 const MCQTest = () => {
   const { sessionId } = useParams();
   const navigate = useNavigate();
@@ -28,6 +30,7 @@ const MCQTest = () => {
   const [score, setScore] = useState(0);
   const [loading, setLoading] = useState(true);
   const [usedQuestionIds, setUsedQuestionIds] = useState<string[]>([]);
+  const [cameraGranted, setCameraGranted] = useState(false);
 
   const finishMCQ = useCallback(async () => {
     if (!sessionId) return;
