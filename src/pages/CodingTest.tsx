@@ -25,6 +25,8 @@ const LANGUAGES = [
   { value: "rust", label: "Rust" },
 ];
 
+import CameraPermissionGate from "@/components/CameraPermissionGate";
+
 const CodingTest = () => {
   const { sessionId } = useParams();
   const navigate = useNavigate();
@@ -40,6 +42,7 @@ const CodingTest = () => {
   const [userSkills, setUserSkills] = useState<string[]>([]);
   const [showConsole, setShowConsole] = useState(true);
   const editorRef = useRef<any>(null);
+  const [cameraGranted, setCameraGranted] = useState(false);
 
   const finishTest = useCallback(async () => {
     if (!sessionId) return;
