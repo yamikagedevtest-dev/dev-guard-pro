@@ -30,19 +30,21 @@ const Index = () => {
     <div className="min-h-screen bg-background overflow-hidden">
       {/* Nav */}
       <nav className="fixed top-0 w-full z-50 glass-strong border-b border-border/20">
-        <div className="container mx-auto px-6 h-16 flex items-center justify-between">
-          <Logo size={32} />
-          <div className="flex items-center gap-3">
-            <Button variant="ghost" onClick={() => navigate('/login')} className="text-sm">Login</Button>
-            <Button onClick={() => navigate('/register')} className="gradient-primary text-primary-foreground text-sm">
-              Get Started <ArrowRight className="w-4 h-4 ml-1" />
+        <div className="container mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+          <Logo size={28} />
+          <div className="flex items-center gap-2 sm:gap-3">
+            <Button variant="ghost" onClick={() => navigate('/login')} className="text-sm px-2 sm:px-4">Login</Button>
+            <Button onClick={() => navigate('/register')} className="gradient-primary text-primary-foreground text-sm px-3 sm:px-4">
+              <span className="hidden sm:inline">Get Started</span>
+              <span className="sm:hidden">Start</span>
+              <ArrowRight className="w-4 h-4 ml-1" />
             </Button>
           </div>
         </div>
       </nav>
 
       {/* Hero */}
-      <section className="pt-32 pb-24 px-6 relative">
+      <section className="pt-24 sm:pt-32 pb-16 sm:pb-24 px-4 sm:px-6 relative">
         <div className="absolute inset-0 z-0">
           <img src={heroBg} alt="" className="w-full h-full object-cover opacity-30" width={1920} height={1080} loading="eager" />
           <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/80 to-background" />
@@ -55,7 +57,7 @@ const Index = () => {
               <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
               AI-Powered Developer Evaluation Platform
             </div>
-            <h1 className="text-5xl md:text-7xl font-extrabold mb-6 leading-[1.1] tracking-tight">
+            <h1 className="text-3xl sm:text-5xl md:text-7xl font-extrabold mb-6 leading-[1.1] tracking-tight">
               Identify the{" "}
               <span className="gradient-text">Top 1%</span>
               <br />of Developers
@@ -161,10 +163,10 @@ const Index = () => {
       </section>
 
       {/* Footer */}
-      <footer className="py-8 px-6 border-t border-border/20">
-        <div className="container mx-auto flex items-center justify-between text-sm text-muted-foreground">
+      <footer className="py-8 px-4 sm:px-6 border-t border-border/20">
+        <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-muted-foreground">
           <Logo size={24} />
-          <span>© 2026 Yamikage Dev Tester. All rights reserved.</span>
+          <span className="text-center">© 2026 Yamikage Dev Tester. All rights reserved.</span>
         </div>
       </footer>
     </div>
