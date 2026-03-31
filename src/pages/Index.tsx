@@ -57,7 +57,7 @@ const Index = () => {
               <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
               AI-Powered Developer Evaluation Platform
             </div>
-            <h1 className="text-5xl md:text-7xl font-extrabold mb-6 leading-[1.1] tracking-tight">
+            <h1 className="text-3xl sm:text-5xl md:text-7xl font-extrabold mb-6 leading-[1.1] tracking-tight">
               Identify the{" "}
               <span className="gradient-text">Top 1%</span>
               <br />of Developers

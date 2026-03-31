@@ -78,7 +78,7 @@ const Dashboard = () => {
           <p className="text-muted-foreground">Track your progress and take new assessments</p>
         </div>
 
-        <div className="grid grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
           {[
             { icon: Code, label: 'Tests Taken', value: sessions.length, color: 'gradient-primary', variant: 'bounce' as const },
             { icon: Brain, label: 'Avg Score', value: `${sessions.length > 0 ? Math.round(sessions.reduce((a, s) => a + Number(s.total_score || 0), 0) / sessions.length) : 0}%`, color: 'gradient-accent', variant: 'glow' as const },
