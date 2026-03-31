@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -18,6 +19,7 @@ const Dashboard = () => {
   const [sessions, setSessions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
@@ -37,6 +39,10 @@ const Dashboard = () => {
 
   const startTest = async () => {
     if (!user) return;
+    if (profile?.is_blocked) {
+      toast({ title: "Account Blocked", description: profile.blocked_reason || "Your account has been blocked by an admin.", variant: "destructive" });
+      return;
+    }
     const { data, error } = await supabase.from('test_sessions').insert({
       user_id: user.id, status: 'in_progress', started_at: new Date().toISOString(),
     }).select().single();

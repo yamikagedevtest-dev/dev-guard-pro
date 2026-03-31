@@ -25,6 +25,8 @@ const LANGUAGES = [
   { value: "rust", label: "Rust" },
 ];
 
+import CameraPermissionGate from "@/components/CameraPermissionGate";
+
 const CodingTest = () => {
   const { sessionId } = useParams();
   const navigate = useNavigate();
@@ -40,6 +42,7 @@ const CodingTest = () => {
   const [userSkills, setUserSkills] = useState<string[]>([]);
   const [showConsole, setShowConsole] = useState(true);
   const editorRef = useRef<any>(null);
+  const [cameraGranted, setCameraGranted] = useState(false);
 
   const finishTest = useCallback(async () => {
     if (!sessionId) return;
@@ -203,6 +206,10 @@ const CodingTest = () => {
     return userSkills.some(s => l.label.toLowerCase().includes(s) || l.value.includes(s));
   });
   const displayLangs = availableLanguages.length > 0 ? availableLanguages : LANGUAGES;
+
+  if (!cameraGranted) {
+    return <CameraPermissionGate onGranted={() => setCameraGranted(true)} />;
+  }
 
   if (loading) return <div className="min-h-screen flex items-center justify-center"><ChipLoader text="Loading Code" /></div>;
 

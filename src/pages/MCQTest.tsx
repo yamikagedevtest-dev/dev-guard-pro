@@ -13,6 +13,8 @@ import WebcamProctor from "@/components/WebcamProctor";
 import ChipLoader from "@/components/ChipLoader";
 import AnimatedIcon from "@/components/AnimatedIcon";
 
+import CameraPermissionGate from "@/components/CameraPermissionGate";
+
 const MCQTest = () => {
   const { sessionId } = useParams();
   const navigate = useNavigate();
@@ -28,6 +30,7 @@ const MCQTest = () => {
   const [score, setScore] = useState(0);
   const [loading, setLoading] = useState(true);
   const [usedQuestionIds, setUsedQuestionIds] = useState<string[]>([]);
+  const [cameraGranted, setCameraGranted] = useState(false);
 
   const finishMCQ = useCallback(async () => {
     if (!sessionId) return;
@@ -119,6 +122,10 @@ const MCQTest = () => {
   };
 
   const formatTime = (s: number) => `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, '0')}`;
+
+  if (!cameraGranted) {
+    return <CameraPermissionGate onGranted={() => setCameraGranted(true)} />;
+  }
 
   if (loading && questions.length === 0) {
     return <div className="min-h-screen flex items-center justify-center"><ChipLoader text="Loading MCQ" /></div>;
