@@ -123,6 +123,10 @@ const MCQTest = () => {
 
   const formatTime = (s: number) => `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, '0')}`;
 
+  if (!cameraGranted) {
+    return <CameraPermissionGate onGranted={() => setCameraGranted(true)} />;
+  }
+
   if (loading && questions.length === 0) {
     return <div className="min-h-screen flex items-center justify-center"><ChipLoader text="Loading MCQ" /></div>;
   }

@@ -136,12 +136,14 @@ export type Database = {
       profiles: {
         Row: {
           avatar_url: string | null
+          blocked_reason: string | null
           created_at: string | null
           email: string
           experience_years: number | null
           full_name: string
           github_url: string | null
           id: string
+          is_blocked: boolean
           location: string | null
           phone: string | null
           portfolio_url: string | null
@@ -150,12 +152,14 @@ export type Database = {
         }
         Insert: {
           avatar_url?: string | null
+          blocked_reason?: string | null
           created_at?: string | null
           email?: string
           experience_years?: number | null
           full_name?: string
           github_url?: string | null
           id: string
+          is_blocked?: boolean
           location?: string | null
           phone?: string | null
           portfolio_url?: string | null
@@ -164,12 +168,14 @@ export type Database = {
         }
         Update: {
           avatar_url?: string | null
+          blocked_reason?: string | null
           created_at?: string | null
           email?: string
           experience_years?: number | null
           full_name?: string
           github_url?: string | null
           id?: string
+          is_blocked?: boolean
           location?: string | null
           phone?: string | null
           portfolio_url?: string | null

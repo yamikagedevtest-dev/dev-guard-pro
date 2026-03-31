@@ -207,6 +207,10 @@ const CodingTest = () => {
   });
   const displayLangs = availableLanguages.length > 0 ? availableLanguages : LANGUAGES;
 
+  if (!cameraGranted) {
+    return <CameraPermissionGate onGranted={() => setCameraGranted(true)} />;
+  }
+
   if (loading) return <div className="min-h-screen flex items-center justify-center"><ChipLoader text="Loading Code" /></div>;
 
   const diffColor = currentChallenge?.difficulty === 'easy' ? 'border-accent/30 text-accent' : currentChallenge?.difficulty === 'medium' ? 'border-warning/30 text-warning' : 'border-destructive/30 text-destructive';
