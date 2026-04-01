@@ -70,46 +70,46 @@ const Register = () => {
   const steps = ["Account", "Professional", "Skills"];
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12 relative">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(250_85%_65%/0.06),transparent_50%)]" />
+    <div className="min-h-screen flex items-center justify-center px-3 sm:px-4 py-8 sm:py-12 relative">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(172_66%_50%/0.05),transparent_50%)]" />
       <Card className="w-full max-w-2xl glass glow relative z-10">
-        <CardHeader className="text-center pb-2">
-          <div className="flex justify-center mb-6"><Logo size={40} /></div>
-          <CardTitle className="text-2xl font-bold">Create Account</CardTitle>
+        <CardHeader className="text-center pb-2 px-4 sm:px-6">
+          <div className="flex justify-center mb-4 sm:mb-6"><Logo size={36} /></div>
+          <CardTitle className="text-xl sm:text-2xl font-bold">Create Account</CardTitle>
           <CardDescription>Step {step + 1} of {steps.length}: {steps[step]}</CardDescription>
           <div className="flex items-center gap-2 justify-center mt-4">
             {steps.map((_, i) => (
-              <div key={i} className={`h-1.5 rounded-full transition-all ${i <= step ? 'gradient-primary w-12' : 'bg-muted w-8'}`} />
+              <div key={i} className={`h-1.5 rounded-full transition-all ${i <= step ? 'gradient-primary w-10 sm:w-12' : 'bg-muted w-6 sm:w-8'}`} />
             ))}
           </div>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-4 sm:px-6">
           <AnimatePresence mode="wait">
             <motion.div key={step} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.2 }}>
               {step === 0 && (
-                <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4">
                   <div className="space-y-1.5"><label className="text-sm text-muted-foreground">Full Name *</label><Input value={fullName} onChange={e => setFullName(e.target.value)} /></div>
                   <div className="space-y-1.5"><label className="text-sm text-muted-foreground">Email *</label><Input type="email" value={email} onChange={e => setEmail(e.target.value)} /></div>
                   <div className="space-y-1.5"><label className="text-sm text-muted-foreground">Password *</label><Input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Min 6 characters" /></div>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     <div className="space-y-1.5"><label className="text-sm text-muted-foreground">Phone</label><Input value={phone} onChange={e => setPhone(e.target.value)} /></div>
                     <div className="space-y-1.5"><label className="text-sm text-muted-foreground">Location</label><Input value={location} onChange={e => setLocation(e.target.value)} /></div>
                   </div>
                 </div>
               )}
               {step === 1 && (
-                <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4">
                   <div className="space-y-1.5"><label className="text-sm text-muted-foreground">Years of Experience</label><Input type="number" value={experience} onChange={e => setExperience(e.target.value)} /></div>
                   <div className="space-y-1.5"><label className="text-sm text-muted-foreground">GitHub URL</label><Input value={github} onChange={e => setGithub(e.target.value)} placeholder="https://github.com/..." /></div>
                   <div className="space-y-1.5"><label className="text-sm text-muted-foreground">Portfolio URL</label><Input value={portfolio} onChange={e => setPortfolio(e.target.value)} placeholder="https://..." /></div>
                 </div>
               )}
               {step === 2 && (
-                <div className="space-y-5 max-h-[400px] overflow-y-auto pr-2">
+                <div className="space-y-4 sm:space-y-5 max-h-[350px] sm:max-h-[400px] overflow-y-auto pr-1 sm:pr-2">
                   {Object.entries(SKILL_CATEGORIES).map(([category, skills]) => (
                     <div key={category}>
                       <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">{category}</h4>
-                      <div className="flex flex-wrap gap-2">
+                      <div className="flex flex-wrap gap-1.5 sm:gap-2">
                         {skills.map(skill => {
                           const selected = selectedSkills.find(s => s.name === skill);
                           return (
@@ -138,21 +138,21 @@ const Register = () => {
             </motion.div>
           </AnimatePresence>
 
-          <div className="flex justify-between mt-6">
-            <Button variant="outline" onClick={() => setStep(s => s - 1)} disabled={step === 0}>
-              <ArrowLeft className="w-4 h-4 mr-2" /> Back
+          <div className="flex justify-between mt-5 sm:mt-6">
+            <Button variant="outline" onClick={() => setStep(s => s - 1)} disabled={step === 0} className="text-sm">
+              <ArrowLeft className="w-4 h-4 mr-1.5" /> Back
             </Button>
             {step < steps.length - 1 ? (
-              <Button onClick={() => setStep(s => s + 1)} className="gradient-primary text-primary-foreground">
-                Next <ArrowRight className="w-4 h-4 ml-2" />
+              <Button onClick={() => setStep(s => s + 1)} className="gradient-primary text-primary-foreground text-sm">
+                Next <ArrowRight className="w-4 h-4 ml-1.5" />
               </Button>
             ) : (
-              <Button onClick={handleRegister} disabled={loading} className="gradient-primary text-primary-foreground">
+              <Button onClick={handleRegister} disabled={loading} className="gradient-primary text-primary-foreground text-sm">
                 {loading ? "Creating..." : "Create Account"}
               </Button>
             )}
           </div>
-          <p className="text-center text-sm text-muted-foreground mt-6">
+          <p className="text-center text-xs sm:text-sm text-muted-foreground mt-5 sm:mt-6">
             Already have an account? <Link to="/login" className="text-primary hover:underline font-medium">Sign In</Link>
           </p>
         </CardContent>
