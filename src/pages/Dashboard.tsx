@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
-import { Code, Brain, Trophy, LogOut, TrendingUp, User, ArrowRight, Clock } from "lucide-react";
+import { Code, Brain, Trophy, LogOut, TrendingUp, ArrowRight, Clock } from "lucide-react";
 import Logo from "@/components/Logo";
 import AnimatedIcon from "@/components/AnimatedIcon";
 import ChipLoader from "@/components/ChipLoader";
