@@ -23,7 +23,7 @@ const variants = {
     transition: { duration: 3, repeat: Infinity, ease: "linear" as const },
   },
   glow: {
-    animate: { filter: ["drop-shadow(0 0 4px hsl(250 85% 65% / 0.3))", "drop-shadow(0 0 12px hsl(250 85% 65% / 0.6))", "drop-shadow(0 0 4px hsl(250 85% 65% / 0.3))"] },
+    animate: { filter: ["drop-shadow(0 0 4px hsl(172 66% 50% / 0.3))", "drop-shadow(0 0 12px hsl(172 66% 50% / 0.6))", "drop-shadow(0 0 4px hsl(172 66% 50% / 0.3))"] },
     transition: { duration: 2, repeat: Infinity, ease: "easeInOut" as const },
   },
   float: {

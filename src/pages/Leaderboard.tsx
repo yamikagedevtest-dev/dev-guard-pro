@@ -8,7 +8,6 @@ import { Trophy, Medal, ArrowLeft, Shield, TrendingUp } from "lucide-react";
 import Logo from "@/components/Logo";
 import { motion } from "framer-motion";
 import ChipLoader from "@/components/ChipLoader";
-import AnimatedIcon from "@/components/AnimatedIcon";
 
 const Leaderboard = () => {
   const navigate = useNavigate();
@@ -49,34 +48,34 @@ const Leaderboard = () => {
   if (loading) return <div className="min-h-screen flex items-center justify-center"><ChipLoader text="Rankings" /></div>;
 
   return (
-    <div className="min-h-screen p-4 md:p-8">
+    <div className="min-h-screen p-3 sm:p-4 md:p-8">
       <div className="container mx-auto max-w-4xl">
-        <div className="flex items-center justify-between mb-8">
-          <Logo size={36} />
-          <Button variant="ghost" onClick={() => navigate('/dashboard')} className="gap-2">
+        <div className="flex items-center justify-between mb-6 sm:mb-8">
+          <Logo size={32} />
+          <Button variant="ghost" onClick={() => navigate('/dashboard')} className="gap-2 text-sm">
             <ArrowLeft className="w-4 h-4" /> Dashboard
           </Button>
         </div>
 
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-warning/20 mb-4">
-            <Trophy className="w-8 h-8 text-warning" />
+        <div className="text-center mb-8 sm:mb-12">
+          <div className="inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-warning/20 mb-4">
+            <Trophy className="w-7 h-7 sm:w-8 sm:h-8 text-warning" />
           </div>
-          <h1 className="text-4xl font-extrabold mb-2">Leaderboard</h1>
-          <p className="text-muted-foreground">Top developers ranked by score & trust</p>
+          <h1 className="text-3xl sm:text-4xl font-extrabold mb-2">Leaderboard</h1>
+          <p className="text-muted-foreground text-sm">Top developers ranked by score & trust</p>
         </div>
 
         {/* Top 3 */}
         {entries.length >= 3 && (
-          <div className="grid grid-cols-3 gap-3 mb-8">
+          <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-6 sm:mb-8">
             {[entries[1], entries[0], entries[2]].map((e, i) => (
               <motion.div key={e.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.15 }}>
                 <Card className={`glass text-center ${i === 1 ? 'glow scale-105 border-primary/30' : ''}`}>
-                  <CardContent className="pt-6 pb-4">
+                  <CardContent className="pt-4 sm:pt-6 pb-3 sm:pb-4 px-2 sm:px-4">
                     {getRankIcon(e.rank)}
-                    <p className="font-bold mt-2 truncate text-sm">{e.profile?.full_name || 'Anonymous'}</p>
-                    <p className="text-2xl font-extrabold gradient-text">{Math.round(Number(e.total_score))}%</p>
-                    <div className="flex items-center justify-center gap-1 text-xs text-muted-foreground">
+                    <p className="font-bold mt-2 truncate text-xs sm:text-sm">{e.profile?.full_name || 'Anonymous'}</p>
+                    <p className="text-xl sm:text-2xl font-extrabold gradient-text">{Math.round(Number(e.total_score))}%</p>
+                    <div className="flex items-center justify-center gap-1 text-[10px] sm:text-xs text-muted-foreground">
                       <Shield className="w-3 h-3" /> {Math.round(Number(e.trust_score))}
                     </div>
                   </CardContent>
@@ -87,32 +86,32 @@ const Leaderboard = () => {
         )}
 
         <Card className="glass">
-          <CardHeader><CardTitle className="flex items-center gap-2 text-lg"><TrendingUp className="w-5 h-5 text-primary" /> Rankings</CardTitle></CardHeader>
+          <CardHeader><CardTitle className="flex items-center gap-2 text-base sm:text-lg"><TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-primary" /> Rankings</CardTitle></CardHeader>
           <CardContent>
             <div className="space-y-1.5">
               {entries.map((e, i) => (
                 <motion.div key={e.id} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.02 }}
-                  className="flex items-center gap-4 p-3 rounded-lg hover:bg-secondary/20 transition-colors">
-                  <div className="w-8 flex-shrink-0">{getRankIcon(e.rank)}</div>
+                  className="flex items-center gap-2.5 sm:gap-4 p-2.5 sm:p-3 rounded-lg hover:bg-secondary/20 transition-colors">
+                  <div className="w-7 sm:w-8 flex-shrink-0">{getRankIcon(e.rank)}</div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium text-sm truncate">{e.profile?.full_name || 'Anonymous'}</p>
-                    <p className="text-xs text-muted-foreground">{e.profile?.email}</p>
+                    <p className="font-medium text-xs sm:text-sm truncate">{e.profile?.full_name || 'Anonymous'}</p>
+                    <p className="text-[10px] sm:text-xs text-muted-foreground truncate">{e.profile?.email}</p>
                   </div>
                   <div className="text-right flex-shrink-0">
-                    <p className="font-bold text-sm gradient-text">{Math.round(Number(e.total_score))}%</p>
+                    <p className="font-bold text-xs sm:text-sm gradient-text">{Math.round(Number(e.total_score))}%</p>
                   </div>
-                  <div className="flex items-center gap-1 w-14 justify-end">
+                  <div className="hidden sm:flex items-center gap-1 w-14 justify-end">
                     <Shield className="w-3 h-3 text-muted-foreground" />
-                    <span className={`text-xs ${Number(e.trust_score) >= 70 ? 'text-accent' : Number(e.trust_score) >= 40 ? 'text-warning' : 'text-destructive'}`}>
+                    <span className={`text-xs ${Number(e.trust_score) >= 70 ? 'text-primary' : Number(e.trust_score) >= 40 ? 'text-warning' : 'text-destructive'}`}>
                       {Math.round(Number(e.trust_score))}
                     </span>
                   </div>
-                  <Badge variant="outline" className={`text-[10px] flex-shrink-0 ${e.cheat_status === 'clean' ? 'border-accent/30 text-accent' : e.cheat_status === 'suspicious' ? 'border-warning/30 text-warning' : 'border-destructive/30 text-destructive'}`}>
+                  <Badge variant="outline" className={`text-[9px] sm:text-[10px] flex-shrink-0 ${e.cheat_status === 'clean' ? 'border-primary/30 text-primary' : e.cheat_status === 'suspicious' ? 'border-warning/30 text-warning' : 'border-destructive/30 text-destructive'}`}>
                     {e.cheat_status}
                   </Badge>
                 </motion.div>
               ))}
-              {entries.length === 0 && <p className="text-center text-muted-foreground py-8">No completed tests yet</p>}
+              {entries.length === 0 && <p className="text-center text-muted-foreground py-8 text-sm">No completed tests yet</p>}
             </div>
           </CardContent>
         </Card>

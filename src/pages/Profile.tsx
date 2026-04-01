@@ -106,78 +106,78 @@ const Profile = () => {
   const initials = fullName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
 
   return (
-    <div className="min-h-screen p-4 md:p-8">
+    <div className="min-h-screen p-3 sm:p-4 md:p-8">
       <div className="container mx-auto max-w-3xl">
-        <div className="flex items-center justify-between mb-8">
-          <Button variant="ghost" onClick={() => navigate('/dashboard')} className="gap-2">
+        <div className="flex items-center justify-between mb-6 sm:mb-8">
+          <Button variant="ghost" onClick={() => navigate('/dashboard')} className="gap-2 text-sm">
             <ArrowLeft className="w-4 h-4" /> Dashboard
           </Button>
           <Logo size={28} />
         </div>
 
         {/* Avatar & Header */}
-        <div className="flex flex-col items-center mb-8">
-          <div className="relative group mb-4">
-            <Avatar className="w-28 h-28 border-2 border-primary/30">
+        <div className="flex flex-col items-center mb-6 sm:mb-8">
+          <div className="relative group mb-3 sm:mb-4">
+            <Avatar className="w-24 h-24 sm:w-28 sm:h-28 border-2 border-primary/30">
               <AvatarImage src={profile?.avatar_url} />
-              <AvatarFallback className="text-2xl font-bold bg-primary/20 text-primary">{initials || 'U'}</AvatarFallback>
+              <AvatarFallback className="text-xl sm:text-2xl font-bold bg-primary/20 text-primary">{initials || 'U'}</AvatarFallback>
             </Avatar>
             <button
               onClick={() => fileInputRef.current?.click()}
               disabled={uploading}
               className="absolute inset-0 rounded-full bg-background/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
             >
-              <Camera className="w-6 h-6 text-foreground" />
+              <Camera className="w-5 h-5 sm:w-6 sm:h-6 text-foreground" />
             </button>
             <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleAvatarUpload} />
           </div>
-          <h1 className="text-2xl font-bold">{fullName || 'Your Profile'}</h1>
-          <p className="text-muted-foreground text-sm">{user?.email}</p>
+          <h1 className="text-xl sm:text-2xl font-bold">{fullName || 'Your Profile'}</h1>
+          <p className="text-muted-foreground text-xs sm:text-sm">{user?.email}</p>
         </div>
 
         {/* Profile Form */}
-        <Card className="glass mb-6">
-          <CardHeader>
-            <CardTitle className="text-lg flex items-center gap-2"><User className="w-5 h-5 text-primary" /> Personal Info</CardTitle>
+        <Card className="glass mb-4 sm:mb-6">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base sm:text-lg flex items-center gap-2"><User className="w-4 h-4 sm:w-5 sm:h-5 text-primary" /> Personal Info</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <CardContent className="space-y-3 sm:space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
               <div className="space-y-1.5">
-                <label className="text-sm text-muted-foreground flex items-center gap-1.5"><User className="w-3.5 h-3.5" /> Full Name</label>
+                <label className="text-xs sm:text-sm text-muted-foreground flex items-center gap-1.5"><User className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> Full Name</label>
                 <Input value={fullName} onChange={e => setFullName(e.target.value)} />
               </div>
               <div className="space-y-1.5">
-                <label className="text-sm text-muted-foreground flex items-center gap-1.5"><Mail className="w-3.5 h-3.5" /> Email</label>
+                <label className="text-xs sm:text-sm text-muted-foreground flex items-center gap-1.5"><Mail className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> Email</label>
                 <Input value={user?.email || ''} disabled className="opacity-60" />
               </div>
               <div className="space-y-1.5">
-                <label className="text-sm text-muted-foreground flex items-center gap-1.5"><Phone className="w-3.5 h-3.5" /> Phone</label>
+                <label className="text-xs sm:text-sm text-muted-foreground flex items-center gap-1.5"><Phone className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> Phone</label>
                 <Input value={phone} onChange={e => setPhone(e.target.value)} />
               </div>
               <div className="space-y-1.5">
-                <label className="text-sm text-muted-foreground flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5" /> Location</label>
+                <label className="text-xs sm:text-sm text-muted-foreground flex items-center gap-1.5"><MapPin className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> Location</label>
                 <Input value={location} onChange={e => setLocation(e.target.value)} />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="glass mb-6">
-          <CardHeader>
-            <CardTitle className="text-lg flex items-center gap-2"><Briefcase className="w-5 h-5 text-primary" /> Professional</CardTitle>
+        <Card className="glass mb-4 sm:mb-6">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base sm:text-lg flex items-center gap-2"><Briefcase className="w-4 h-4 sm:w-5 sm:h-5 text-primary" /> Professional</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <CardContent className="space-y-3 sm:space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
               <div className="space-y-1.5">
-                <label className="text-sm text-muted-foreground">Years of Experience</label>
+                <label className="text-xs sm:text-sm text-muted-foreground">Years of Experience</label>
                 <Input type="number" value={experience} onChange={e => setExperience(e.target.value)} />
               </div>
               <div className="space-y-1.5">
-                <label className="text-sm text-muted-foreground flex items-center gap-1.5"><Github className="w-3.5 h-3.5" /> GitHub</label>
+                <label className="text-xs sm:text-sm text-muted-foreground flex items-center gap-1.5"><Github className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> GitHub</label>
                 <Input value={github} onChange={e => setGithub(e.target.value)} placeholder="https://github.com/..." />
               </div>
               <div className="space-y-1.5 md:col-span-2">
-                <label className="text-sm text-muted-foreground flex items-center gap-1.5"><Globe className="w-3.5 h-3.5" /> Portfolio</label>
+                <label className="text-xs sm:text-sm text-muted-foreground flex items-center gap-1.5"><Globe className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> Portfolio</label>
                 <Input value={portfolio} onChange={e => setPortfolio(e.target.value)} placeholder="https://..." />
               </div>
             </div>
@@ -186,16 +186,16 @@ const Profile = () => {
 
         {/* Skills */}
         {skills.length > 0 && (
-          <Card className="glass mb-6">
-            <CardHeader>
-              <CardTitle className="text-lg">Skills</CardTitle>
+          <Card className="glass mb-4 sm:mb-6">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base sm:text-lg">Skills</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-1.5 sm:gap-2">
                 {skills.map(s => (
-                  <Badge key={s.id} variant="outline" className="text-sm py-1 px-3">
+                  <Badge key={s.id} variant="outline" className="text-xs sm:text-sm py-0.5 sm:py-1 px-2.5 sm:px-3">
                     {s.skill_name}
-                    <span className="ml-1.5 text-xs text-muted-foreground">({s.skill_level})</span>
+                    <span className="ml-1.5 text-[10px] sm:text-xs text-muted-foreground">({s.skill_level})</span>
                   </Badge>
                 ))}
               </div>
@@ -203,7 +203,7 @@ const Profile = () => {
           </Card>
         )}
 
-        <Button onClick={handleSave} disabled={saving} className="w-full gradient-primary text-primary-foreground">
+        <Button onClick={handleSave} disabled={saving} className="w-full gradient-primary text-primary-foreground text-sm">
           <Save className="w-4 h-4 mr-2" /> {saving ? 'Saving...' : 'Save Changes'}
         </Button>
       </div>
