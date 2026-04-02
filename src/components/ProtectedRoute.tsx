@@ -14,29 +14,40 @@ const ProtectedRoute = ({ children, requireAdmin }: Props) => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    const checkAuth = async (u: User | null) => {
-      setUser(u);
-      if (u && requireAdmin) {
-        const { data } = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', u.id)
-          .eq('role', 'admin')
-          .maybeSingle();
-        setIsAdmin(!!data);
-      }
-      setLoading(false);
+    let mounted = true;
+
+    const checkAdmin = async (u: User) => {
+      const { data } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', u.id)
+        .eq('role', 'admin')
+        .maybeSingle();
+      if (mounted) setIsAdmin(!!data);
     };
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_, session) => {
-      checkAuth(session?.user ?? null);
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!mounted) return;
+      const u = session?.user ?? null;
+      setUser(u);
+      if (u && requireAdmin) {
+        checkAdmin(u);
+      }
+      setLoading(false);
     });
 
     supabase.auth.getSession().then(({ data: { session } }) => {
-      checkAuth(session?.user ?? null);
+      if (!mounted) return;
+      const u = session?.user ?? null;
+      setUser(u);
+      if (u && requireAdmin) {
+        checkAdmin(u);
+      } else {
+        setLoading(false);
+      }
     });
 
-    return () => subscription.unsubscribe();
+    return () => { mounted = false; subscription.unsubscribe(); };
   }, [requireAdmin]);
 
   if (loading) {
