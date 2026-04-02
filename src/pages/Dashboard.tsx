@@ -65,6 +65,11 @@ const Dashboard = () => {
 
   const initials = (profile?.full_name || 'U').split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2);
 
+  const todayStart = new Date();
+  todayStart.setHours(0, 0, 0, 0);
+  const todayTests = sessions.filter(s => new Date(s.created_at) >= todayStart).length;
+  const testsRemaining = Math.max(0, 3 - todayTests);
+
   return (
     <div className="min-h-screen p-3 sm:p-4 md:p-8">
       <div className="container mx-auto max-w-5xl">
@@ -123,8 +128,18 @@ const Dashboard = () => {
               <p className="text-muted-foreground text-xs sm:text-sm max-w-md">
                 Take a comprehensive developer evaluation with MCQ, coding challenges, and real-time adaptive difficulty.
               </p>
+              <div className="mt-2 flex items-center gap-2">
+                <div className="flex gap-1">
+                  {[0, 1, 2].map(i => (
+                    <div key={i} className={`w-2.5 h-2.5 rounded-full transition-colors ${i < todayTests ? 'bg-muted-foreground/30' : 'bg-primary'}`} />
+                  ))}
+                </div>
+                <span className={`text-xs font-medium ${testsRemaining === 0 ? 'text-destructive' : 'text-muted-foreground'}`}>
+                  {testsRemaining === 0 ? 'Daily limit reached' : `${testsRemaining} test${testsRemaining !== 1 ? 's' : ''} remaining today`}
+                </span>
+              </div>
             </div>
-            <Button onClick={startTest} className="gradient-primary text-primary-foreground px-5 sm:px-6 h-10 sm:h-11 flex-shrink-0 w-full sm:w-auto text-sm">
+            <Button onClick={startTest} disabled={testsRemaining === 0} className="gradient-primary text-primary-foreground px-5 sm:px-6 h-10 sm:h-11 flex-shrink-0 w-full sm:w-auto text-sm disabled:opacity-50">
               Start New Test <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </div>
