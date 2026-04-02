@@ -65,6 +65,11 @@ const Dashboard = () => {
 
   const initials = (profile?.full_name || 'U').split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2);
 
+  const todayStart = new Date();
+  todayStart.setHours(0, 0, 0, 0);
+  const todayTests = sessions.filter(s => new Date(s.created_at) >= todayStart).length;
+  const testsRemaining = Math.max(0, 3 - todayTests);
+
   return (
     <div className="min-h-screen p-3 sm:p-4 md:p-8">
       <div className="container mx-auto max-w-5xl">
