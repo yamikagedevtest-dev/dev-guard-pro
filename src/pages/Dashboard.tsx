@@ -43,6 +43,16 @@ const Dashboard = () => {
       toast({ title: "Account Blocked", description: profile.blocked_reason || "Your account has been blocked by an admin.", variant: "destructive" });
       return;
     }
+
+    // Rate limit: max 3 tests per day
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+    const todaySessions = sessions.filter(s => new Date(s.created_at) >= todayStart);
+    if (todaySessions.length >= 3) {
+      toast({ title: "Daily Limit Reached", description: "You can only take 3 tests per day. Please try again tomorrow.", variant: "destructive" });
+      return;
+    }
+
     const { data, error } = await supabase.from('test_sessions').insert({
       user_id: user.id, status: 'in_progress', started_at: new Date().toISOString(),
     }).select().single();
