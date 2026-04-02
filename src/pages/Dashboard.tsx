@@ -22,19 +22,37 @@ const Dashboard = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
-      setUser(data.user);
-      if (data.user) {
-        Promise.all([
-          supabase.from('profiles').select('*').eq('id', data.user.id).single(),
-          supabase.from('test_sessions').select('*').eq('user_id', data.user.id).order('created_at', { ascending: false }),
-        ]).then(([profileRes, sessionsRes]) => {
-          setProfile(profileRes.data);
-          setSessions(sessionsRes.data || []);
-          setLoading(false);
-        });
+    let mounted = true;
+
+    const loadData = async (userId: string) => {
+      const [profileRes, sessionsRes] = await Promise.all([
+        supabase.from('profiles').select('*').eq('id', userId).single(),
+        supabase.from('test_sessions').select('*').eq('user_id', userId).order('created_at', { ascending: false }),
+      ]);
+      if (mounted) {
+        setProfile(profileRes.data);
+        setSessions(sessionsRes.data || []);
+        setLoading(false);
       }
+    };
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!mounted) return;
+      const u = session?.user ?? null;
+      setUser(u);
+      if (u) loadData(u.id);
+      else setLoading(false);
     });
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (!mounted) return;
+      const u = session?.user ?? null;
+      setUser(u);
+      if (u) loadData(u.id);
+      else setLoading(false);
+    });
+
+    return () => { mounted = false; subscription.unsubscribe(); };
   }, []);
 
   const startTest = async () => {
